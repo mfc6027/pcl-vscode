@@ -1,0 +1,437 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "Patran PCL",
+	"scopeName": "source.pcl",
+	"patterns": [
+		{
+			"include": "#strings"
+		},
+		{
+			"include": "#comments"
+		},
+		{
+			"include": "#code"
+		},
+		{
+			"include": "#operators"
+		},
+		{
+			"include": "#numbers"
+		}
+	],
+	"repository": {
+		"keywords": {
+			"patterns": [
+				{
+					"name": "keyword.control.pcl",
+					"match": "(?i)\\b(BEGN|BREAK|CLASS|BY|CASE|CLASSWIDE|GLOBAL|CONTINUE|DEFAULT|DUMP|TRUE|FALSE|ELSE|FOR|END|FUNCTION|IF|INFORMATIVE|LOCAL|ON|RETURN|SWITCH|THEN|TO|UNTIL|VIRTUAL|WHILE|WIDGET|WIDGET_NULL)\\b"
+				},
+				{
+					"include": "#storage-modifiers"
+				}
+			]
+		},
+		"innertype": {
+			"patterns": [
+				{
+					"name": "storage.type.pcl",
+					"match": "(?i)\\b(INTEGER|STRING|LIST|REAL|LOGICAL)\\b"
+				}
+			]
+		},
+		"strings": {
+			"name": "string.quoted.double.pcl",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"name": "constant.character.escape.pcl",
+					"match": "\\\\."
+				}
+			]
+		},
+		"parens": {
+			"patterns": [
+				{
+					"begin": "\\(",
+					"beginCaptures": {
+						"0": {
+							"name": "punctuation.bracket.round.pcl"
+						}
+					},
+					"end": "\\)",
+					"endCaptures": {
+						"0": {
+							"name": "punctuation.bracket.round.pcl"
+						}
+					},
+					"patterns": [
+						{
+							"include": "#code"
+						}
+					]
+				},
+				{
+					"begin": "\\[",
+					"beginCaptures": {
+						"0": {
+							"name": "punctuation.bracket.square.pcl"
+						}
+					},
+					"end": "\\]",
+					"endCaptures": {
+						"0": {
+							"name": "punctuation.bracket.square.pcl"
+						}
+					},
+					"patterns": [
+						{
+							"include": "#code"
+						}
+					]
+				}
+			]
+		},
+		"numbers": {
+			"patterns": [
+				{
+					"match": "(?x)\n\\b(?<!\\$)\n0(x|X)\n(\n  (?<!\\.)[0-9a-fA-F]([0-9a-fA-F_]*[0-9a-fA-F])?[Ll]?(?!\\.)\n  |\n  (\n    [0-9a-fA-F]([0-9a-fA-F_]*[0-9a-fA-F])?\\.?\n    |\n    ([0-9a-fA-F]([0-9a-fA-F_]*[0-9a-fA-F])?)?\\.[0-9a-fA-F]([0-9a-fA-F_]*[0-9a-fA-F])?\n  )\n  [Pp][+-]?[0-9]([0-9_]*[0-9])?[FfDd]?\n)\n\\b(?!\\$)",
+					"name": "constant.numeric.hex.pcl"
+				},
+				{
+					"match": "\\b(?<!\\$)0(b|B)[01]([01_]*[01])?[Ll]?\\b(?!\\$)",
+					"name": "constant.numeric.binary.pcl"
+				},
+				{
+					"match": "\\b(?<!\\$)0[0-7]([0-7_]*[0-7])?[Ll]?\\b(?!\\$)",
+					"name": "constant.numeric.octal.pclpcl"
+				},
+				{
+					"match": "(?x)\n(?<!\\$)\n(\n  \\b[0-9]([0-9_]*[0-9])?\\.\\B(?!\\.)\n  |\n  \\b[0-9]([0-9_]*[0-9])?\\.([Ee][+-]?[0-9]([0-9_]*[0-9])?)[FfDd]?\\b\n  |\n  \\b[0-9]([0-9_]*[0-9])?\\.([Ee][+-]?[0-9]([0-9_]*[0-9])?)?[FfDd]\\b\n  |\n  \\b[0-9]([0-9_]*[0-9])?\\.([0-9]([0-9_]*[0-9])?)([Ee][+-]?[0-9]([0-9_]*[0-9])?)?[FfDd]?\\b\n  |\n  (?<!\\.)\\B\\.[0-9]([0-9_]*[0-9])?([Ee][+-]?[0-9]([0-9_]*[0-9])?)?[FfDd]?\\b\n  |\n  \\b[0-9]([0-9_]*[0-9])?([Ee][+-]?[0-9]([0-9_]*[0-9])?)[FfDd]?\\b\n  |\n  \\b[0-9]([0-9_]*[0-9])?([Ee][+-]?[0-9]([0-9_]*[0-9])?)?[FfDd]\\b\n  |\n  \\b(0|[1-9]([0-9_]*[0-9])?)(?!\\.)[Ll]?\\b\n)\n(?!\\$)",
+					"name": "constant.numeric.decimal.pcl"
+				}
+			]
+		},
+		"comments": {
+			"patterns": [
+				{
+					"begin": "/\\*\\*(?!/)",
+					"captures": {
+						"0": {
+							"name": "punctuation.definition.comment.pcl"
+						}
+					},
+					"end": "\\*/",
+					"name": "comment.block.documentation.pcl"
+				},
+				{
+					"begin": "/\\*",
+					"captures": {
+						"0": {
+							"name": "punctuation.definition.comment.pcl"
+						}
+					},
+					"end": "\\*/",
+					"name": "comment.block.pcl"
+				},
+				{
+					"captures": {
+						"1": {
+							"name": "punctuation.definition.comment.pcl"
+						}
+					},
+					"match": "(\\$).*$\\n?",
+					"name": "comment.line.percentage.pcl"
+				}
+			]
+		},
+		"operators": {
+			"patterns": [
+				{
+					"match": "(?<![\\w$])(sizeof)(?![\\w$])",
+					"name": "keyword.operator.sizeof.pcl"
+				},
+				{
+					"match": "--",
+					"name": "keyword.operator.decrement.pcl"
+				},
+				{
+					"match": "\\+\\+",
+					"name": "keyword.operator.increment.pcl"
+				},
+				{
+					"match": "%=|\\+=|-=|\\*=|(?<!\\()/=",
+					"name": "keyword.operator.assignment.compound.pcl"
+				},
+				{
+					"match": "&=|\\^=|<<=|>>=|\\|=",
+					"name": "keyword.operator.assignment.compound.bitwise.pcl"
+				},
+				{
+					"match": "<<|>>",
+					"name": "keyword.operator.bitwise.shift.pcl"
+				},
+				{
+					"match": "!=|<=|>=|==|<|>",
+					"name": "keyword.operator.comparison.pcl"
+				},
+				{
+					"match": "&&|!|\\|\\|",
+					"name": "keyword.operator.logical.pcl"
+				},
+				{
+					"match": "&|\\||\\^|~",
+					"name": "keyword.operator.pcl"
+				},
+				{
+					"match": "=",
+					"name": "keyword.operator.assignment.pcl"
+				},
+				{
+					"match": "%|\\*|/|-|\\+",
+					"name": "keyword.operator.pcl"
+				}
+			]
+		},
+		"code": {
+			"patterns": [
+				{
+					"include": "#comments"
+				},
+				{
+					"include": "#define"
+				},
+				{
+					"include": "#class-express"
+				},
+				{
+					"include": "#for-expression"
+				},
+				{
+					"include": "#variable-define"
+				},
+				{
+					"include": "#function-expression"
+				},
+				{
+					"include": "#keywords"
+				}
+			]
+		},
+		"for-expression": {
+			"match": "(?i)(FOR)(?-i)\\s*\\((.+)\\s+(?i)(TO)(?-i)\\s+(.+\\))",
+			"captures": {
+				"1":{
+					"patterns": [
+						{
+							"include": "#keywords"
+						}
+					]
+				},
+				"2":{
+					"patterns": [
+						{
+							"include": "#code"
+						}
+					]
+				},
+				"3":{
+					"patterns": [
+						{
+							"include": "#keywords"
+						}
+					]
+				},
+				"4":{
+					"patterns": [
+						{
+							"include": "#code"
+						}
+					]
+				}
+			}
+			
+		},
+		"variable-define": {
+			"patterns": [
+				{
+					"match": "(?i)\\b(INTEGER|STRING|LIST|REAL|LOGICAL|RETURN)\\b(?-i)\\s+((\\w+)\\s*((\\([\\w\\d\\-,+\\.]*\\))|(\\[[\\w\\d\\-,+\\.]*\\]))?)((\\s*,\\s*((\\w+)\\s*((\\([\\w\\d\\-,+\\.]*\\))|(\\[[\\w\\d\\-,+\\.]*\\]))?))*)",
+					"name": "support.other.pcl",
+					"captures": {
+						"1": {
+							"patterns": [
+								{
+									"include": "#innertype"
+								},
+								{
+									"include": "#keywords"
+								}
+							]
+						},
+						"2": {
+							"patterns": [
+								{
+									"include": "#variable-define-single"
+								}
+							]
+						},
+						"7": {
+							"patterns": [
+								{
+									"include": "#variable-define-single"
+								}
+							]
+						}
+					}
+				},
+				{
+					"match":"\\b\\w+\\b\\s*(\\(.*?\\))?\\s*(?=[\\+\\-\\*\\/=]?=|,|\\))",
+					"captures": {
+						"0":{
+							"patterns": [
+								{
+									"include": "#keywords"
+								},
+								{
+									"include": "#function-expression"
+								},
+								{
+									"include": "#variable-define-single"
+								}
+							]
+						}
+					}
+				},
+				{
+					"match": "(?<=([=!<>]?=)|[<>,\\(+\\-\\*\\/])\\s*\\b(\\w+)\\b(?!\\.)",
+					"name":"support.other.variable.define.pcl",
+					"captures": {
+						"2": {
+							"patterns": [
+								{
+									"include": "#numbers"
+								},
+								{
+									"include": "#variable-define-single"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		"variable-define-single": {
+			"match": "(\\w+)\\s*((\\([\\w\\d\\-+,\\.]*\\))|(\\[[\\w\\d\\-+,\\.]*\\]))?",
+			"name": "support.other.variable.single.pcl",
+			"captures": {
+				"1": {
+					"name": "punctuation.definition.tag.pcl"
+				},
+				"2": {
+					"patterns": [
+						{
+							"include": "#paramters"
+						},
+						{
+							"match": "[\\(\\)\\[\\]]",
+							"name": "support.other.pcl"
+						}
+					]
+				}
+			}
+		},
+		"paramters": {
+			"patterns": [
+				{
+					"include": "#numbers"
+				},
+				{
+					"include": "#strings"
+				},
+				{
+					"include": "#variable-define-single"
+				}
+			]
+		},
+		"storage-modifiers": {
+			"match": "(?i)\\b(STATIC|READONLY)\\b",
+			"name": "storage.modifier.java"
+		},
+		"class-express": {
+			"patterns": [
+				{
+					"match": "(?i)(?<=CLASS)(\\s+\\w+)",
+					"name": "support.class.pcl"
+				},
+				{
+					"match": "(\\w+)(?=\\.[a-zA-Z])",
+					"name": "support.class.pcl"
+				}
+			]
+		},
+		"function-expression": {
+			"patterns": [
+				{
+					"match": "(?i)(FUNCTION)\\b\\s+(\\w+)\\s*(?=\\()",
+					"name": "support.function.expression.pcl",
+					"captures": {
+						"1": {
+							"patterns": [
+								{
+									"include": "#keywords"
+								}
+							]
+						}
+					}
+				},
+				{
+					"match": "(?<=\\.)\\s*(\\w+)",
+					"name": "support.function.expression.pcl"
+				},
+				{
+					"match": "^\\s*(\\b\\w+\\b)\\s*\\(([^=]*?\\))(?![\\w,=])",
+					"name": "support.other.q.pcl",
+					"captures": {
+						"1":{
+							"name": "support.function.expression.q.name.pcl",
+							"patterns": [
+								{
+									"include": "#keywords"
+								}
+							]
+							
+						},
+						"2":{
+							"name": "support.function.expression.q.param.pcl",
+							"patterns": [
+								{
+									"include": "#strings"
+								},
+								{
+									"include": "#code"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		
+		"define": {
+			"patterns": [
+				{
+					"match": "(#define)\\s+(\\w+)(?:\\s*\\w*)",
+					"name": "meta.preprocessor.pcl",
+					"captures": {
+						"1": {
+							"name": "keyword.control.pcl"
+						},
+						"2": {
+							"name": "meta.preprocessor.string.pcl"
+						}
+					}
+				}
+			]
+		}
+	}
+}

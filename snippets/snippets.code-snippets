@@ -1,0 +1,16 @@
+{
+    "FUNCTION": {
+		"prefix": "FUN",
+		"body": [
+			"FUNCTION $1\n$2\nEND FUNCTION",
+		],
+		"description": "FUNCTION"
+	},
+	"CLASS": {
+		"prefix": "CLA",
+		"body": [
+			"CLASS $1\n$2\nEND CLASS",
+		],
+		"description": "CLASS"
+	}
+}
